@@ -10,8 +10,19 @@ import (
 )
 
 func ogimageHandle(w http.ResponseWriter, r *http.Request) {
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("disable-gpu", true),
+		chromedp.Flag("disable-setuid-sandbox", true),
+		chromedp.Flag("no-sandbox", true),
+		chromedp.Flag("no-zygote", true),
+		chromedp.Flag("single-process", true),
+	)
+
+	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer cancel()
+
 	ctx, cancel := chromedp.NewContext(
-		context.Background(),
+		allocCtx,
 	)
 	defer cancel()
 
