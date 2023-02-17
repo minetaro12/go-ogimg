@@ -9,7 +9,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func ogimgHandle(w http.ResponseWriter, r *http.Request) {
+func ogimageHandle(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := chromedp.NewContext(
 		context.Background(),
 	)
@@ -38,7 +38,7 @@ func ogimgHandle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Add("cache-control", "public, max-age=3600")
+	w.Header().Add("cache-control", "public, max-age=86400")
 	w.Write(imgBuf)
 }
 

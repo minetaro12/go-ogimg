@@ -13,7 +13,7 @@ var (
 
 func main() {
 	log.Println("Server Listening on", httpListen)
-	http.HandleFunc("/ogimg.jpg", ogimgHandle)
+	http.HandleFunc("/ogimage.jpg", ogimageHandle)
 	log.Fatal(http.ListenAndServe(httpListen, logRequest(http.DefaultServeMux)))
 }
 
