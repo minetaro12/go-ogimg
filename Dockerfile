@@ -1,12 +1,12 @@
-FROM golang:1.20.0-alpine3.17 AS builder
+FROM golang:1.20.0 AS builder
 
 WORKDIR /work
 COPY . ./
-RUN go build
+RUN go build -buildvcs=false
 
-FROM alpine:3.17.2
-RUN apk add --no-cache chromium
+FROM gcr.io/distroless/base:latest
 WORKDIR /app
+ADD https://github.com/IBM/plex/raw/master/IBM-Plex-Sans-JP/fonts/complete/ttf/hinted/IBMPlexSansJP-Bold.ttf /app/font.ttf
 COPY --from=builder /work/go-ogimg /app
 
 EXPOSE 8000

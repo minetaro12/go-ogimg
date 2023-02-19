@@ -12,6 +12,10 @@ var (
 )
 
 func main() {
+	if !fileExists("font.ttf") {
+		log.Fatal("font.ttf not found")
+	}
+
 	log.Println("Server Listening on", httpListen)
 	http.HandleFunc("/ogimage.jpg", ogimageHandle)
 	http.HandleFunc("/ping", pingHandle)
@@ -23,6 +27,11 @@ func getEnv(key, fallback string) string {
 		return val
 	}
 	return fallback
+}
+
+func fileExists(filename string) bool {
+	_, err := os.Stat(filename)
+	return err == nil
 }
 
 func logRequest(handler http.Handler) http.Handler {
