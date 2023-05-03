@@ -14,14 +14,22 @@ type siteData struct {
 	Tags  []string
 }
 
-func generate(data siteData) (*bytes.Buffer, error) {
-	width := 1200
-	height := 630
+var (
+	width  int = 1200
+	height int = 630
 
+	bgColor    string = "#222129"
+	titleColor string = "#4169e1"
+	siteColor  string = "#FFFFFF"
+	tagColor   string = "#000000"
+	tagBgColor string = "#FFFFFF"
+)
+
+func generate(data siteData) (*bytes.Buffer, error) {
 	var buffer bytes.Buffer
 	ctx := gg.NewContext(width, height)
 	ctx.DrawRectangle(0, 0, float64(width), float64(height))
-	ctx.SetHexColor("#222129")
+	ctx.SetHexColor(bgColor)
 	ctx.Fill()
 
 	// タイトルの書き込み
@@ -56,7 +64,7 @@ func drawTitle(title string, ctx *gg.Context) error {
 		return err
 	}
 
-	ctx.SetHexColor("#4169e1")
+	ctx.SetHexColor(titleColor)
 	tmp := splitText(title, 27)
 
 	for k, v := range tmp {
@@ -70,7 +78,7 @@ func drawSite(site string, ctx *gg.Context) error {
 		return err
 	}
 
-	ctx.SetHexColor("#FFFFFF")
+	ctx.SetHexColor(siteColor)
 	ctx.DrawString(site, 70, 570)
 	return nil
 }
@@ -82,11 +90,11 @@ func drawTags(tags []string, ctx *gg.Context) error {
 
 	currentX := 70
 	for _, v := range tags {
-		ctx.SetHexColor("#FFFFFF")
+		ctx.SetHexColor(tagBgColor)
 		width, _ := ctx.MeasureString(v)
 		ctx.DrawRectangle(float64(currentX)-10, 40, width+20, 50)
 		ctx.Fill()
-		ctx.SetHexColor("#000000")
+		ctx.SetHexColor(tagColor)
 		ctx.DrawString(v, float64(currentX), 75)
 		currentX = currentX + int(width) + 50
 	}
