@@ -18,7 +18,6 @@ func main() {
 
 	log.Println("Server Listening on", httpListen)
 	http.HandleFunc("/", ogimageHandle)
-	http.HandleFunc("/ping", pingHandle)
 	log.Fatal(http.ListenAndServe(httpListen, logRequest(http.DefaultServeMux)))
 }
 
