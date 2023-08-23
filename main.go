@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"go-ogimg/handlers"
 	"log"
 	"net/http"
 	"os"
@@ -11,13 +12,17 @@ var (
 	httpListen = fmt.Sprintf(":%v", getEnv("PORT", "8000"))
 )
 
-func main() {
+func init() {
+	// フォントファイルがなければ起動しない
 	if !fileExists("font.ttf") {
 		log.Fatal("font.ttf not found")
 	}
+}
+
+func main() {
+	http.HandleFunc("/", handlers.Root)
 
 	log.Println("Server Listening on", httpListen)
-	http.HandleFunc("/", ogimageHandle)
 	log.Fatal(http.ListenAndServe(httpListen, logRequest(http.DefaultServeMux)))
 }
 
@@ -38,8 +43,4 @@ func logRequest(handler http.Handler) http.Handler {
 		log.Printf("%s %s %s\n", r.RemoteAddr, r.Method, r.URL)
 		handler.ServeHTTP(w, r)
 	})
-}
-
-func errorResponse(w http.ResponseWriter) {
-	http.Error(w, "Error", http.StatusInternalServerError)
 }

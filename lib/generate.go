@@ -1,4 +1,4 @@
-package main
+package lib
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"github.com/mattn/go-runewidth"
 )
 
-type siteData struct {
+type SiteData struct {
 	Title string
 	Site  string
 	Tags  []string
@@ -25,7 +25,7 @@ var (
 	tagBgColor string = "#FFFFFF"
 )
 
-func generate(data siteData) (*bytes.Buffer, error) {
+func Generate(data SiteData) (*bytes.Buffer, error) {
 	var buffer bytes.Buffer
 	ctx := gg.NewContext(width, height)
 	ctx.DrawRectangle(0, 0, float64(width), float64(height))
@@ -91,7 +91,10 @@ func drawTags(tags []string, ctx *gg.Context) error {
 	currentX := 70
 	for _, v := range tags {
 		ctx.SetHexColor(tagBgColor)
+		// 文字列長さを取得
 		width, _ := ctx.MeasureString(v)
+
+		// タグの背景部分を描画
 		ctx.DrawRectangle(float64(currentX)-10, 40, width+20, 50)
 		ctx.Fill()
 		ctx.SetHexColor(tagColor)
