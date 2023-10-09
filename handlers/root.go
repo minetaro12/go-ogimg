@@ -4,21 +4,22 @@ import (
 	"fmt"
 	"go-ogimg/lib"
 	_ "image/png"
-	"net/http"
 	"os"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
-func Root(w http.ResponseWriter, r *http.Request) {
+func Root(c *gin.Context) {
 	// クエリ文字列のタグ部分のパース
 	tags := []string{}
-	if r.FormValue("tags") != "" {
-		tags = strings.Split(r.FormValue("tags"), ",")
+	if c.Request.FormValue("tags") != "" {
+		tags = strings.Split(c.Request.FormValue("tags"), ",")
 	}
 
 	data := lib.SiteData{
-		Title: r.FormValue("title"),
-		Site:  r.FormValue("site"),
+		Title: c.Request.FormValue("title"),
+		Site:  c.Request.FormValue("site"),
 		Tags:  tags,
 	}
 
@@ -26,18 +27,20 @@ func Root(w http.ResponseWriter, r *http.Request) {
 	img, err := lib.Generate(data)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		c.Status(500)
+		c.Writer.WriteString("Internal Server Error")
 		return
 	}
 
 	// jpegに変換
 	if err := lib.Png2jpg(img); err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		c.Status(500)
+		c.Writer.WriteString("Internal Server Error")
 		return
 	}
 
 	// キャッシュ設定&レスポンス
-	w.Header().Add("cache-control", "public, max-age=86400")
-	w.Write(img.Bytes())
+	c.Header("cache-control", "public, max-age=86400")
+	c.Writer.Write(img.Bytes())
 }
