@@ -65,7 +65,7 @@ func drawTitle(title string, ctx *gg.Context) error {
 	}
 
 	ctx.SetHexColor(titleColor)
-	tmp := splitText(title, 27)
+	tmp := splitText(title, 24)
 
 	for k, v := range tmp {
 		ctx.DrawString(v, 50, 220+float64(90*k))
