@@ -7,19 +7,19 @@ import (
 	"os"
 	"strings"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
-func Root(c *gin.Context) {
+func Root(c *fiber.Ctx) error {
 	// クエリ文字列のタグ部分のパース
 	tags := []string{}
-	if c.Request.FormValue("tags") != "" {
-		tags = strings.Split(c.Request.FormValue("tags"), ",")
+	if c.Query("tags") != "" {
+		tags = strings.Split(c.Query("tags"), ",")
 	}
 
 	data := lib.SiteData{
-		Title: c.Request.FormValue("title"),
-		Site:  c.Request.FormValue("site"),
+		Title: c.Query("title"),
+		Site:  c.Query("site"),
 		Tags:  tags,
 	}
 
@@ -28,19 +28,19 @@ func Root(c *gin.Context) {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		c.Status(500)
-		c.Writer.WriteString("Internal Server Error")
-		return
+		c.SendString("Internal Server Error")
+		return err
 	}
 
 	// jpegに変換
 	if err := lib.Png2jpg(img); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		c.Status(500)
-		c.Writer.WriteString("Internal Server Error")
-		return
+		c.SendString("Internal Server Error")
+		return err
 	}
 
-	// キャッシュ設定&レスポンス
-	c.Header("cache-control", "public, max-age=86400")
-	c.Writer.Write(img.Bytes())
+	c.Response().Header.Add("cache-control", "public, max-age=86400")
+	c.Send(img.Bytes())
+	return nil
 }
