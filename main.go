@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
 var (
@@ -21,12 +21,11 @@ func init() {
 }
 
 func main() {
-	gin.SetMode("release")
-	r := gin.Default()
-	r.GET("/", handlers.Root)
+	app := fiber.New()
+	app.Get("/", handlers.Root)
 
 	log.Println("Server Listening on", httpListen)
-	err := r.Run(httpListen)
+	err := app.Listen(httpListen)
 	if err != nil {
 		log.Fatal(err)
 	}
