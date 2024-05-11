@@ -1,8 +1,8 @@
-FROM golang:1.22.2-alpine AS builder
+FROM golang:1.22.3-alpine AS builder
 
 WORKDIR /work
 COPY . ./
-RUN CGO_ENABLED=0 go build -buildvcs=false -o main
+RUN CGO_ENABLED=0 go build -buildvcs=false -ldflags="-s -w" -trimpath -o main
 
 FROM gcr.io/distroless/static:latest
 WORKDIR /app
