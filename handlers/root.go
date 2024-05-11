@@ -1,9 +1,10 @@
 package handlers
 
 import (
+	"bytes"
 	"fmt"
 	"go-ogimg/lib"
-	_ "image/png"
+	"image/jpeg"
 	"os"
 	"strings"
 
@@ -32,15 +33,18 @@ func Root(c *fiber.Ctx) error {
 		return err
 	}
 
-	// jpegに変換
-	if err := lib.Png2jpg(img); err != nil {
+	// jpegにエンコード
+	buffer := new(bytes.Buffer)
+	if err := jpeg.Encode(buffer, img, nil); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		c.Status(500)
 		c.SendString("Internal Server Error")
 		return err
 	}
 
-	c.Response().Header.Add("cache-control", "public, max-age=86400")
-	c.Send(img.Bytes())
+	// レスポンスヘッダーの設定
+	c.Set("Cache-Control", "public, max-age=86400")
+	c.Set("Content-Type", "image/jpeg")
+	c.Send(buffer.Bytes())
 	return nil
 }
