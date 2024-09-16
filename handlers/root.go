@@ -24,6 +24,13 @@ func Root(c *fiber.Ctx) error {
 		Tags:  tags,
 	}
 
+	// 空の場合は400を返す
+	if data.Title == "" && data.Site == "" && len(data.Tags) == 0 {
+		c.Status(400)
+		c.SendString("Bad Request")
+		return nil
+	}
+
 	// 画像生成
 	img, err := lib.Generate(data)
 	if err != nil {
