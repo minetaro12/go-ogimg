@@ -1,4 +1,4 @@
-module go-ogimg
+module github.com/minetaro12/go-ogimg
 
 go 1.20
 

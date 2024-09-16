@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"go-ogimg/handlers"
 	"log"
 	"os"
+
+	"github.com/minetaro12/go-ogimg/handlers"
 
 	"github.com/gofiber/fiber/v2"
 )
