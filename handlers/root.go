@@ -3,10 +3,11 @@ package handlers
 import (
 	"bytes"
 	"fmt"
-	"go-ogimg/lib"
 	"image/jpeg"
 	"os"
 	"strings"
+
+	"github.com/minetaro12/go-ogimg/lib"
 
 	"github.com/gofiber/fiber/v2"
 )
