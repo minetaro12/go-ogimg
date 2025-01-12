@@ -6,7 +6,6 @@ toolchain go1.23.4
 
 require (
 	github.com/gofiber/fiber/v2 v2.52.6
-	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/icza/gox v0.2.0
 	golang.org/x/image v0.23.0
 )
@@ -23,4 +22,5 @@ require (
 	github.com/valyala/fasthttp v1.58.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/sys v0.29.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 )

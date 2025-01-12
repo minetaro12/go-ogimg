@@ -4,14 +4,15 @@ import (
 	"image"
 	"image/draw"
 
-	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 	"golang.org/x/image/math/fixed"
 )
 
-func drawTags(img *image.RGBA, tags []string, font_ *truetype.Font) {
-	face := truetype.NewFace(font_, &truetype.Options{
+func drawTags(img *image.RGBA, tags []string, font_ *opentype.Font) {
+	face, _ := opentype.NewFace(font_, &opentype.FaceOptions{
 		Size: 30,
+		DPI:  72,
 	})
 
 	d := &font.Drawer{

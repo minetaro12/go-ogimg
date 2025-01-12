@@ -3,14 +3,15 @@ package lib
 import (
 	"image"
 
-	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
+	"golang.org/x/image/font/opentype"
 	"golang.org/x/image/math/fixed"
 )
 
-func drawTitle(img *image.RGBA, title string, font_ *truetype.Font) {
-	face := truetype.NewFace(font_, &truetype.Options{
+func drawTitle(img *image.RGBA, title string, font_ *opentype.Font) {
+	face, _ := opentype.NewFace(font_, &opentype.FaceOptions{
 		Size: 75,
+		DPI:  72,
 	})
 
 	d := &font.Drawer{
@@ -19,7 +20,7 @@ func drawTitle(img *image.RGBA, title string, font_ *truetype.Font) {
 		Face: face,
 	}
 
-	lineHeight := d.Face.Metrics().Height.Ceil() + 20
+	lineHeight := d.Face.Metrics().Height.Ceil()
 	var wrappedText []string
 
 	// 1行の長さが1100を超えたら改行する

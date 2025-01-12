@@ -6,8 +6,8 @@ import (
 	"image/draw"
 	"os"
 
-	"github.com/golang/freetype/truetype"
 	"github.com/icza/gox/imagex/colorx"
+	"golang.org/x/image/font/opentype"
 )
 
 type SiteData struct {
@@ -34,7 +34,7 @@ func Generate(data SiteData) (*image.RGBA, error) {
 	draw.Draw(img, img.Bounds(), &image.Uniform{hexToRGBA(bgColor)}, image.Point{}, draw.Src)
 
 	// フォントの読み込み
-	font, err := loadFont("./font.ttf")
+	font, err := loadFont("./font.otf")
 	if err != nil {
 		return nil, err
 	}
@@ -46,13 +46,13 @@ func Generate(data SiteData) (*image.RGBA, error) {
 	return img, nil
 }
 
-func loadFont(path string) (*truetype.Font, error) {
-	ttf, err := os.ReadFile(path)
+func loadFont(path string) (*opentype.Font, error) {
+	file, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	font, err := truetype.Parse(ttf)
+	font, err := opentype.Parse(file)
 	if err != nil {
 		return nil, err
 	}

@@ -16,7 +16,7 @@ var (
 
 func init() {
 	// フォントファイルがなければ起動しない
-	if !fileExists("font.ttf") {
+	if !fileExists("font.otf") {
 		log.Fatal("font.ttf not found")
 	}
 }

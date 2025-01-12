@@ -101,3 +101,8 @@ go.work
 
 # tmp dir
 tmp
+
+font.otf
+font.ttf
+
+fly.toml
